@@ -17,7 +17,7 @@
           <input type="search" v-model.trim="fit" />
         </div>
         <ul>
-          <li v-for="email in emails" :class="{ 'marked': fitted( email ) }" > {{ email }} </li>
+          <li v-for="email in emails" :class="{ 'marked': fitted[ email ] }" > {{ email }} </li>
         </ul>
       </div>
     </div>
