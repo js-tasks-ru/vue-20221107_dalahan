@@ -7,15 +7,15 @@
   <body>
     <div id="app">
       <div>
-        <label><input type="radio" name="meetupId" value="1" /> 1</label>
-        <label><input type="radio" name="meetupId" value="2" /> 2</label>
-        <label><input type="radio" name="meetupId" value="3" /> 3</label>
-        <label><input type="radio" name="meetupId" value="4" /> 4</label>
-        <label><input type="radio" name="meetupId" value="5" /> 5</label>
+        <label><input type="radio" name="meetupId" value="1" v-model="mId" /> 1</label>
+        <label><input type="radio" name="meetupId" value="2" v-model="mId" /> 2</label>
+        <label><input type="radio" name="meetupId" value="3" v-model="mId" /> 3</label>
+        <label><input type="radio" name="meetupId" value="4" v-model="mId" /> 4</label>
+        <label><input type="radio" name="meetupId" value="5" v-model="mId" /> 5</label>
 
         <hr />
 
-        <h3>MEETUP_TITLE</h3>
+        <h3> {{ mTitle }} </h3>
       </div>
     </div>
 
