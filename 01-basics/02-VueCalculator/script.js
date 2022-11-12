@@ -12,11 +12,6 @@ const App = defineComponent({
   },
   computed: {
     result() {
-      return this.calc();
-    },
-  },
-  methods: {
-    calc() {
       let res = 0;
       switch (this.oper) {
         case 'sum':
