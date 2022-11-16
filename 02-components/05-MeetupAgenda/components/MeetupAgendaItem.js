@@ -14,7 +14,7 @@ export default defineComponent({
       return !this.agendaItem.title ? agendaItemDefaultTitles[this.agendaItem.type] : this.agendaItem.title;
     },
     itemIcon() {
-      return '../../src/assets/icons/icon-' + agendaItemIcons[this.agendaItem.type] + '.svg';
+      return '/assets/icons/icon-' + agendaItemIcons[this.agendaItem.type] + '.svg';
     },
   },
 
