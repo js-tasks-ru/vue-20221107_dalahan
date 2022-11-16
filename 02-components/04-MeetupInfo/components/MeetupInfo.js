@@ -19,9 +19,7 @@ export default defineComponent({
   },
   computed: {
     localDate() {
-      return (
-        this.date && new Date(this.date).toLocaleDateString('ru-RU', { year: 'numeric', month: 'long', day: 'numeric' })
-      );
+      return this.date && new Date(this.date).toLocaleDateString(navigator.language, { year: 'numeric', month: 'long', day: 'numeric' });
     },
   },
 
