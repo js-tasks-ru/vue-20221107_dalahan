@@ -42,7 +42,7 @@ const App = defineComponent({
     fitted() {
       let res = {};
       let fit_str = this.fit;
-      this.emails.forEach(function(el) {
+      this.emails.forEach(function (el) {
         res[el] = fit_str == '' ? false : el.indexOf(fit_str) > -1;
       });
       return res;
