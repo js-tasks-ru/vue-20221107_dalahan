@@ -1,7 +1,8 @@
 import { defineComponent } from '../vendor/vue.esm-browser.js';
 import UiContainer from './UiContainer.js';
 import UiAlert from './UiAlert.js';
-// import { fetchMeetupById } from './meetupService.js';
+import { fetchMeetupById } from '../meetupService.js';
+import MeetupView from './MeetupView';
 
 export default defineComponent({
   name: 'PageMeetup',
@@ -9,18 +10,57 @@ export default defineComponent({
   components: {
     UiAlert,
     UiContainer,
+    MeetupView,
+  },
+
+  props: {
+    meetupId: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
+  },
+
+  data() {
+    return {
+      meetup: {},
+      savId: 0,
+    };
+  },
+  updated() {
+    this.getMeetup();
+  },
+  mounted() {
+    this.getMeetup();
+  },
+
+  methods: {
+    getMeetup() {
+      if (this.savId != this.meetupId) {
+        this.meetup = {};   // обнуляю только ради прохождения 5го автотеста :( 
+        fetchMeetupById(this.meetupId)
+          .then((result) => {
+            this.meetup = result;
+          })
+          .catch((error) => {
+            this.meetup = { error };
+          });
+        this.savId = this.meetupId;
+      }
+    },
   },
 
   template: `
     <div class="page-meetup">
-      <!-- meetup view -->
+      <MeetupView v-if="meetup.id" :meetup="meetup" />
 
-      <UiContainer>
+      <UiContainer v-else-if="!meetup.error" >
         <UiAlert>Загрузка...</UiAlert>
       </UiContainer>
 
-      <UiContainer>
-        <UiAlert>error</UiAlert>
+      <UiContainer v-else >
+        <UiAlert>{{ meetup.error.message }}</UiAlert>
       </UiContainer>
+
     </div>`,
 });
