@@ -37,7 +37,8 @@ export default defineComponent({
   methods: {
     getMeetup() {
       if (this.savId != this.meetupId) {
-        this.meetup = {};   // обнуляю только ради прохождения 5го автотеста :( 
+        this.savId = this.meetupId;   // защита от множественного срабатывания
+        this.meetup = {};             // обнуляю только ради прохождения 5го автотеста :( 
         fetchMeetupById(this.meetupId)
           .then((result) => {
             this.meetup = result;
@@ -45,7 +46,6 @@ export default defineComponent({
           .catch((error) => {
             this.meetup = { error };
           });
-        this.savId = this.meetupId;
       }
     },
   },
