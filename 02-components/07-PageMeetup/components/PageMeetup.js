@@ -23,12 +23,13 @@ export default defineComponent({
 
   data() {
     return {
-      meetup: {},
-      savId: 0,
+      meetup: null,
     };
   },
-  updated() {
-    this.getMeetup();
+  watch: {
+    meetupId() {
+      this.getMeetup();
+    },
   },
   mounted() {
     this.getMeetup();
@@ -36,31 +37,29 @@ export default defineComponent({
 
   methods: {
     getMeetup() {
-      if (this.savId != this.meetupId) {
-        this.savId = this.meetupId;   // защита от множественного срабатывания
-        this.meetup = {};             // обнуляю только ради прохождения 5го автотеста :( 
-        fetchMeetupById(this.meetupId)
-          .then((result) => {
-            this.meetup = result;
-          })
-          .catch((error) => {
-            this.meetup = { error };
-          });
-      }
+      this.meetup = null;
+      fetchMeetupById(this.meetupId)
+        .then((result) => {
+          this.meetup = result;
+        })
+        .catch((error) => {
+          this.meetup = { error };
+        });
     },
   },
 
   template: `
     <div class="page-meetup">
-      <MeetupView v-if="meetup.id" :meetup="meetup" />
 
-      <UiContainer v-else-if="!meetup.error" >
+      <UiContainer v-if="!meetup" >
         <UiAlert>Загрузка...</UiAlert>
       </UiContainer>
 
-      <UiContainer v-else >
+      <UiContainer v-else-if="meetup.error" >
         <UiAlert>{{ meetup.error.message }}</UiAlert>
       </UiContainer>
+
+      <MeetupView v-else :meetup="meetup" />
 
     </div>`,
 });
