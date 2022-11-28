@@ -1,18 +1,26 @@
 <template>
-  <div class="dropdown dropdown_opened">
-    <button type="button" class="dropdown__toggle dropdown__toggle_icon">
-      <ui-icon icon="tv" class="dropdown__icon" />
-      <span>Title</span>
+  <div class="dropdown" :class="{ dropdown_opened: toggle_menu }">
+    <button
+      type="button"
+      class="dropdown__toggle"
+      :class="{ dropdown__toggle_icon: showIcon }"
+      @click="toggle_menu = !toggle_menu"
+    >
+      <ui-icon :icon="btnIcon" class="dropdown__icon" />
+      <span>{{ btnTitle }}</span>
     </button>
 
-    <div class="dropdown__menu" role="listbox">
-      <button class="dropdown__item dropdown__item_icon" role="option" type="button">
-        <ui-icon icon="tv" class="dropdown__icon" />
-        Option 1
-      </button>
-      <button class="dropdown__item dropdown__item_icon" role="option" type="button">
-        <ui-icon icon="tv" class="dropdown__icon" />
-        Option 2
+    <div v-show="toggle_menu" class="dropdown__menu" role="listbox">
+      <button
+        v-for="opt in options"
+        class="dropdown__item"
+        :class="{ dropdown__item_icon: showIcon }"
+        role="option"
+        type="button"
+        @click="setVal(opt.value)"
+      >
+        <ui-icon :icon="opt.icon" class="dropdown__icon" />
+        {{ opt.text }}
       </button>
     </div>
   </div>
@@ -25,6 +33,43 @@ export default {
   name: 'UiDropdown',
 
   components: { UiIcon },
+
+  props: {
+    title: {
+      type: String,
+      required: true,
+    },
+    options: {
+      type: Array,
+      required: true,
+    },
+    modelValue: String,
+  },
+
+  data() {
+    return {
+      toggle_menu: false,
+    };
+  },
+
+  computed: {
+    btnTitle() {
+      return !this.modelValue ? this.title : this.options.filter((el) => el.value == this.modelValue)[0].text;
+    },
+    btnIcon() {
+      return !this.modelValue ? null : this.options.filter((el) => el.value == this.modelValue)[0].icon;
+    },
+    showIcon() {
+      return this.options.filter((el) => el.icon != null).length > 0;
+    },
+  },
+
+  methods: {
+    setVal(val) {
+      this.$emit('update:modelValue', val);
+      this.toggle_menu = false;
+    },
+  },
 };
 </script>
 
