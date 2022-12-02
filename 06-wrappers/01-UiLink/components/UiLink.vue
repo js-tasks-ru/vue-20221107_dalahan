@@ -1,6 +1,5 @@
 <template>
-  <a v-if="tag == 'a'" class="link"> <slot /> </a>
-  <router-link v-else :props="$attrs"> <slot /> </router-link>
+  <component :is="tag" class="link"> <slot /> </component>
 </template>
 
 <script>
