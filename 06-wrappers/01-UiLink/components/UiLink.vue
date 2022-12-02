@@ -11,9 +11,8 @@ export default {
     tag: {
       type: String,
       default: 'router-link',
-    }
+    },
   },
-
 };
 </script>
 

@@ -1,5 +1,9 @@
 <template>
-  <component :is="tag" :type="(!$attrs.type && tag == 'button' ? 'button' : $attrs.type)" :class="['button', 'button_' + variant, {'button_block': block}]">
+  <component
+    :is="tag"
+    :type="!$attrs.type && tag == 'button' ? 'button' : $attrs.type"
+    :class="['button', 'button_' + variant, { button_block: block }]"
+  >
     <slot />
   </component>
 </template>
@@ -16,14 +20,13 @@ export default {
     variant: {
       type: String,
       default: 'secondary',
-      validator: (prop) => ['primary', 'secondary', 'danger'].includes(prop)
+      validator: (prop) => ['primary', 'secondary', 'danger'].includes(prop),
     },
     block: {
       type: Boolean,
       default: false,
-    }
+    },
   },
-
 };
 </script>
 
