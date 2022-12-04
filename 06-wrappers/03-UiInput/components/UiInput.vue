@@ -14,9 +14,9 @@
     <Component
       :is="multiline ? 'textarea' : 'input'"
       ref="input"
+      v-bind="$attrs"
       :class="{ 'form-control': true, 'form-control_rounded': rounded, 'form-control_sm': small }"
       :value="modelValue"
-      v-bind="$attrs"
       @input="$emit('update:modelValue', $event.target.value)"
     />
 
@@ -31,15 +31,18 @@ import { defineComponent } from 'vue';
 
 export default {
   name: 'UiInput',
-  components: { defineComponent },
   inheritAttrs: false,
+
   props: {
     modelValue: String,
     small: Boolean,
     rounded: Boolean,
     multiline: Boolean,
   },
+
+  emits: ['update:modelValue'],
   expose: ['focus'],
+
   methods: {
     focus() {
       this.$refs['input'].focus();
