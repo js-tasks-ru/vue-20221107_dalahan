@@ -1,8 +1,19 @@
 <template>
   <div class="image-uploader">
-    <label class="image-uploader__preview image-uploader__preview-loading" style="--bg-url: url('/link.jpeg')">
-      <span class="image-uploader__text">Загрузить изображение</span>
-      <input type="file" accept="image/*" class="image-uploader__input" />
+    <label
+      :class="{ 'image-uploader__preview': true, 'image-uploader__preview-loading': state === 1 }"
+      :style="previewImg && `--bg-url: url('${previewImg}')`"
+    >
+      <span class="image-uploader__text">{{ stateText[state] }}</span>
+      <input
+        ref="input"
+        v-bind="$attrs"
+        type="file"
+        accept="image/*"
+        class="image-uploader__input"
+        @change="selectImg"
+        @click="click"
+      />
     </label>
   </div>
 </template>
@@ -10,6 +21,65 @@
 <script>
 export default {
   name: 'UiImageUploader',
+  inheritAttrs: false,
+
+  props: {
+    preview: String,
+    uploader: Function,
+  },
+
+  emits: ['select', 'upload', 'error', 'remove'],
+
+  data() {
+    return {
+      state: this.preview ? 2 : 0,
+      stateText: ['Загрузить изображение', 'Загрузка...', 'Удалить изображение'],
+      selectedImg: null,
+    };
+  },
+
+  computed: {
+    previewImg() {
+      return this.preview || this.selectedImg;
+    },
+  },
+
+  methods: {
+    selectImg() {
+      let file = this.$refs['input'].files[0];
+      this.selectedImg = URL.createObjectURL(file);
+      this.$emit('select', file);
+      this.state = 1;
+      if (this.uploader) {
+        return this.uploader(file)
+          .then((result) => {
+            this.state = 2;
+            this.$emit('upload', result);
+          })
+          .catch((error) => {
+            this.deleteImg();
+            this.state = 0;
+            this.$emit('error', error);
+          });
+      } else {
+        this.state = 2;
+      }
+    },
+    deleteImg() {
+      this.selectedImg = null;
+      this.$refs['input'].value = '';
+    },
+    click(event) {
+      if (this.state > 0) {
+        event.preventDefault();
+        if (this.state === 2) {
+          this.deleteImg();
+          this.state = 0;
+          this.$emit('remove');
+        }
+      }
+    },
+  },
 };
 </script>
 
