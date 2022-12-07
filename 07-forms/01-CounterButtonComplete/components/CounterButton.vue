@@ -23,7 +23,9 @@ export default {
 
   watch: {
     count() {
-      this.btn_count = this.count;
+      if (this.btn_count != this.count) {
+        this.btn_count = this.count;
+      }
     },
   },
 
