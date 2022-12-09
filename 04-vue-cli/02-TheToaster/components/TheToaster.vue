@@ -1,6 +1,6 @@
 <template>
   <div class="toasts">
-    <div v-for="toast in toastArr" class="toast" :class="toast.class">
+    <div v-for="toast in toastArr" :key="toast.id" class="toast" :class="toast.class">
       <ui-icon class="toast__icon" :icon="toast.icon" />
       <span>{{ toast.message }}</span>
     </div>
