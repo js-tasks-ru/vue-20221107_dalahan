@@ -14,6 +14,8 @@
 </template>
 
 <script>
+import { nextTick } from 'vue';
+
 let lastId = 0;
 
 export default {
@@ -34,6 +36,10 @@ export default {
   methods: {
     handleSendSubmit() {
       this.send();
+      nextTick().then(() => {
+        let msg = this.$refs['items'][lastId - 1];
+        msg.scrollIntoView();
+      });
     },
 
     send() {
