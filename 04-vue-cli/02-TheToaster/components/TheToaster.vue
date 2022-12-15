@@ -1,7 +1,3 @@
-<!-- что не так с этим тестом???
-  https://github.com/js-tasks-ru/vue-20221107_dalahan/actions/runs/3697330290/jobs/6262180471
- -->
-
 <template>
   <div class="toasts">
     <div v-for="toast in toastArr" :key="toast.id" class="toast" :class="toast.class">
@@ -34,13 +30,14 @@ export default {
           timeout: 5000,
         },
       },
+      lastId: 0,
     };
   },
 
   methods: {
     addToast(message, type) {
       let item = {
-        id: Date.now(),
+        id: this.lastId++,
         message: message,
         class: this.toastType[type].class,
         icon: this.toastType[type].icon,
