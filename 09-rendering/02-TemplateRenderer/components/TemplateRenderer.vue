@@ -21,15 +21,18 @@ export default {
     },
   },
 
-  render() {
-    return h(
-      defineComponent({
+  computed: {
+    dc() {
+      return defineComponent({
         components: this.components,
         props: ['bindings'],
         render: compile(this.template),
-      }),
-      { bindings: this.bindings },
-    );
+      });
+    },
+  },
+
+  render() {
+    return h(this.dc, { bindings: this.bindings });
   },
 };
 </script>
