@@ -1,6 +1,6 @@
 <template>
   <div class="pagination-container">
-    <!-- Контент страницы -->
+    <slot v-for="item in filteredItems" :item="item"></slot>
   </div>
 </template>
 
@@ -22,6 +22,19 @@ export default {
     items: {
       type: Array,
       required: true,
+    },
+  },
+
+  computed: {
+    start() {
+      return (this.page - 1) * this.perPage;
+    },
+    end() {
+      let tmp = this.start + this.perPage;
+      return tmp < this.items.length ? tmp : this.items.length;
+    },
+    filteredItems() {
+      return this.items.slice(this.start, this.end);
     },
   },
 };
